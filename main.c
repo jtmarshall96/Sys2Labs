@@ -20,6 +20,15 @@ int board[9][9] = {6,2,4,5,3,9,1,8,7,
 		   4,9,6,1,8,2,5,7,3,
 		   2,8,5,4,7,3,9,1,6}; 
 
+#TRUE = 1;
+#FALSE = 0;
+
+
+int valid_collumn(int board[9][9])
+
+int check_row(int board[9][9])
+
+
 main()
 {
 	int checkRowVal = check_row(board);
