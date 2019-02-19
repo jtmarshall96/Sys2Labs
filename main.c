@@ -28,6 +28,8 @@ int valid_collumn(int board[9][9]);
 
 int check_row(int board[9][9]);
 
+int check_three_by_three(int grid [3][3]);
+
 
 int main()
 {
