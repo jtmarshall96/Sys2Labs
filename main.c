@@ -11,6 +11,7 @@ void *print_message_function( void *ptr );
 
 */
 
+
 #define TRUE  1
 #define FALSE 0
 
@@ -27,8 +28,13 @@ int board[9][9] = {6,2,4,5,3,9,1,8,7,
 
 int valid_collumn(int board[9][9]);
 
+
+int check_row(int board[9][9]);
+
+
 int main()
 {
+	 int checkRowVal = check_row(board);
 	printf("collumn returns: %d\n",valid_collumn(board));
     
      exit(0);
@@ -58,4 +64,48 @@ int valid_collumn(int board[9][9]){
 		}
 	}
 	return TRUE;
+
 }
+
+
+int check_row(int board[9][9])
+{
+
+
+int i=0;
+int j=0;
+int isValid[9] = {0,0,0,0,0,0,0,0,0};
+int overallResult = 1;
+
+	for (i = 0; i<9; i++){
+		for (j=0; j<9; j++){
+			int underExam = board[i][j];
+			if (isValid[underExam-1] == 0){
+				isValid[underExam-1] = 1;
+			} else {
+				/*row is now invalid*/
+				overallResult = 0;
+			}
+			
+		}
+		
+		printf("row complete \n");
+
+		for (int k=0; k<9; k++){
+			printf("%d ", isValid[k]);
+			isValid[k] = 0;
+		}
+
+		printf("\n");
+	}
+
+printf ("Overall Result is %d\n", overallResult);
+
+return overallResult;
+}
+
+
+/*need function to go through rows
+need function to go through columns
+need functions to through each box
+*/
