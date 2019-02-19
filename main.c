@@ -5,15 +5,10 @@
 void *print_message_function( void *ptr );
 
 /*
- TODO: make thread for valid_collumn
- TODO: A thread for valid_row
+ TODO: make a function to check that each column contains the digits 1 through 9
+ TODO: A thread to check that each row contains the digits 1 through 9
  TODO: Nine threads to check that each of the 3*3 subgrids contains the digits 1 through 9 
-
 */
-
-
-#define TRUE  1
-#define FALSE 0
 
 int board[9][9] = {6,2,4,5,3,9,1,8,7,
 		   5,1,9,7,2,8,6,3,4,
@@ -23,50 +18,22 @@ int board[9][9] = {6,2,4,5,3,9,1,8,7,
 		   7,6,2,3,9,1,4,5,8,
 		   3,7,1,9,5,6,8,4,2,
 		   4,9,6,1,8,2,5,7,3,
-		   2,8,5,4,7,3,9,1,6};
+		   2,8,5,4,7,3,9,1,6}; 
 
-
-int valid_collumn(int board[9][9]);
-
-
-int check_row(int board[9][9]);
-
-
-int main()
+main()
 {
-	 int checkRowVal = check_row(board);
+	int checkRowVal = check_row(board);
 	printf("collumn returns: %d\n",valid_collumn(board));
     
-     exit(0);
+	exit(0);
 }
 
-
-int valid_collumn(int board[9][9]){
-
-	int row,collumn,number,i;
-	int nums[9];
-
-	for(row = 0; row<9;row++){
-		
-		for(i = 0; i<9;i++){
-		nums[i] = FALSE;
-		}
-
-		for(collumn =0;collumn<9;collumn++){
-			number = board[collumn][row];
-			printf("number: %d\n",number);
-			if(nums[number-1]){
-				return FALSE;
-			}
-			else{
-				nums[number-1] = 1;
-			}	
-		}
-	}
-	return TRUE;
-
+void *print_message_function(void *ptr)
+{
+     char *message;
+     message = (char *) ptr;
+     printf("%s \n", message);
 }
-
 
 int check_row(int board[9][9])
 {
@@ -102,6 +69,32 @@ int overallResult = 1;
 printf ("Overall Result is %d\n", overallResult);
 
 return overallResult;
+}
+
+int valid_collumn(int board[9][9]){
+
+	int row,collumn,number,i;
+	int nums[9];
+
+	for(row = 0; row<9;row++){
+		
+		for(i = 0; i<9;i++){
+		nums[i] = FALSE;
+		}
+
+		for(collumn =0;collumn<9;collumn++){
+			number = board[collumn][row];
+			printf("number: %d\n",number);
+			if(nums[number-1]){
+				return FALSE;
+			}
+			else{
+				nums[number-1] = 1;
+			}	
+		}
+	}
+	return TRUE;
+
 }
 
 
