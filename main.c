@@ -33,8 +33,10 @@ int main()
 {
 	int checkRowVal = check_row(board);
 	printf("collumn returns: %d\n",valid_collumn(board));
+
+	int grid[3][3] = {6, 2, 4, 5, 1, 9, 8, 3, 7};
+	int checkGridVal = check_three_by_three(grid);
     
-	exit(0);
 }
 
 void *print_message_function(void *ptr)
@@ -65,14 +67,11 @@ int overallResult = 1;
 			
 		}
 		
-		printf("row complete \n");
 
 		for (int k=0; k<9; k++){
-			printf("%d ", isValid[k]);
 			isValid[k] = 0;
 		}
 
-		printf("\n");
 	}
 
 printf ("Overall Result is %d\n", overallResult);
@@ -93,7 +92,6 @@ int valid_collumn(int board[9][9]){
 
 		for(collumn =0;collumn<9;collumn++){
 			number = board[collumn][row];
-			printf("number: %d\n",number);
 			if(nums[number-1]){
 				return FALSE;
 			}
@@ -104,6 +102,37 @@ int valid_collumn(int board[9][9]){
 	}
 	return TRUE;
 
+}
+
+int check_three_by_three(int grid[3][3])
+{
+
+
+int i=0;
+int j=0;
+int isValid[9] = {0,0,0,0,0,0,0,0,0};
+int overallResult = 1;
+int gridResult = 1;
+
+	for (i = 0; i<3; i++){
+		for (j=0; j<3; j++){
+			int underExam = grid[i][j];
+			if (isValid[underExam-1] == 0){
+				isValid[underExam-1] = 1;
+			}
+		}
+	}
+
+	for (int m=0; m<9; m++){
+		printf("%d \n", isValid[m]);
+		if (isValid[m] != 1){
+			gridResult = 0;
+		}
+	}
+
+printf ("GRID Overall Result is %d\n", gridResult);
+
+return gridResult;
 }
 
 
