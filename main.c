@@ -22,8 +22,10 @@ int board[9][9] = {6,2,4,5,3,9,1,8,7,
 
 main()
 {
-     int checkRowVal = check_row(board);
-     exit(0);
+	int checkRowVal = check_row(board);
+	printf("collumn returns: %d\n",valid_collumn(board));
+    
+	exit(0);
 }
 
 void *print_message_function(void *ptr)
@@ -33,7 +35,7 @@ void *print_message_function(void *ptr)
      printf("%s \n", message);
 }
 
-int cgit sheck_row(int board[9][9])
+int check_row(int board[9][9])
 {
 
 
@@ -67,6 +69,32 @@ int overallResult = 1;
 printf ("Overall Result is %d\n", overallResult);
 
 return overallResult;
+}
+
+int valid_collumn(int board[9][9]){
+
+	int row,collumn,number,i;
+	int nums[9];
+
+	for(row = 0; row<9;row++){
+		
+		for(i = 0; i<9;i++){
+		nums[i] = FALSE;
+		}
+
+		for(collumn =0;collumn<9;collumn++){
+			number = board[collumn][row];
+			printf("number: %d\n",number);
+			if(nums[number-1]){
+				return FALSE;
+			}
+			else{
+				nums[number-1] = 1;
+			}	
+		}
+	}
+	return TRUE;
+
 }
 
 
