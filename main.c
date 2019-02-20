@@ -24,20 +24,20 @@ int board[9][9] = {6,2,4,5,3,9,1,8,7,
 #define FALSE 0;
 
 
-int valid_collumn(int board[9][9]);
+int pthread_valid_collumn(int board[9][9]);
 
-int check_row(int board[9][9]);
+int pthread_check_row(int board[9][9]);
 
-int check_three_by_three(int grid [3][3]);
+int pthread_check_three_by_three(int grid [3][3]);
 
 
 int main()
 {
-	int checkRowVal = check_row(board);
-	printf("collumn returns: %d\n",valid_collumn(board));
+	int checkRowVal = pthread_check_row(board);
+	printf("collumn returns: %d\n",pthread_valid_collumn(board));
 
 	int grid[3][3] = {6, 2, 4, 5, 1, 9, 8, 3, 7};
-	int checkGridVal = check_three_by_three(grid);
+	int checkGridVal = pthread_check_three_by_three(grid);
     
 }
 
@@ -48,7 +48,10 @@ void *print_message_function(void *ptr)
      printf("%s \n", message);
 }
 
-int check_row(int board[9][9])
+
+
+
+int pthread_check_row(int board[9][9])
 {
 
 
@@ -81,7 +84,7 @@ printf ("Overall Result is %d\n", overallResult);
 return overallResult;
 }
 
-int valid_collumn(int board[9][9]){
+int pthread_valid_collumn(int board[9][9]){
 
 	int row,collumn,number,i;
 	int nums[9];
@@ -106,7 +109,7 @@ int valid_collumn(int board[9][9]){
 
 }
 
-int check_three_by_three(int grid[3][3])
+int pthread_check_three_by_three(int grid[3][3])
 {
 
 
@@ -126,7 +129,6 @@ int gridResult = 1;
 	}
 
 	for (int m=0; m<9; m++){
-		printf("%d \n", isValid[m]);
 		if (isValid[m] != 1){
 			gridResult = 0;
 		}
