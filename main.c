@@ -33,7 +33,15 @@ int pthread_check_three_by_three(int grid [3][3]);
 
 int main()
 {
-	int checkRowVal = pthread_check_row(board);
+
+	int checkRowVal = 0;
+
+	for (int i=0; i++; i<9){
+		checkRowVal = pthread_check_row(i, board[0..9]);
+		
+	}
+
+
 	printf("collumn returns: %d\n",pthread_valid_collumn(board));
 
 	int grid[3][3] = {6, 2, 4, 5, 1, 9, 8, 3, 7};
@@ -51,37 +59,30 @@ void *print_message_function(void *ptr)
 
 
 
-int pthread_check_row(int board[9][9])
+int pthread_check_row(int column, int aRow[9])
 {
 
 
 int i=0;
 int j=0;
 int isValid[9] = {0,0,0,0,0,0,0,0,0};
-int overallResult = 1;
+int rowResult = 1;
 
-	for (i = 0; i<9; i++){
+	
 		for (j=0; j<9; j++){
-			int underExam = board[i][j];
+			int underExam = board[column][j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			} else {
 				/*row is now invalid*/
-				overallResult = 0;
+				rowResult = 0;
 			}
 			
 		}
-		
 
-		for (int k=0; k<9; k++){
-			isValid[k] = 0;
-		}
+printf ("Row Result is %d\n", overallResult);
 
-	}
-
-printf ("Overall Result is %d\n", overallResult);
-
-return overallResult;
+return rowResult;
 }
 
 int pthread_valid_collumn(int board[9][9]){
@@ -144,3 +145,4 @@ return gridResult;
 need function to go through columns
 need functions to through each box
 */
+
