@@ -36,16 +36,17 @@ int check_three_by_three( struct arg_struct *args);
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
 	char digit;
 	int x,y,board[9][9], ret_val,temp,grid_val;
 	FILE *in_file;
 	int argsArr[5]= {board, 0,2,0,2};
+	char *filename = argv[argc-1];
 	
 	struct arg_struct *args = (struct arg_struct*)malloc(sizeof(struct arg_struct));
 
-	in_file = fopen("sudoku.txt","r");
+	in_file = fopen(filename,"r");
 
 	
 		
