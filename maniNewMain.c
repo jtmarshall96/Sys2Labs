@@ -34,7 +34,7 @@ int pthread_check_three_by_three(int grid [3][3]);
 int main()
 {
 
-	pthread_t row1, row2, row3, row4, row4, row6, row7, row8, row9, output_thread;
+	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9, output_thread;
 	void *ret_number;
 
 	pthread_create(&row1, NULL, board[0, 1, 2, 3, 4, 5, 6, 7, 8], NULL);
@@ -61,7 +61,7 @@ void *print_message_function(void *ptr)
 
 
 
-int pthread_check_row(int board[9], int column)
+int pthread_check_row(int board[9][9], int column)
 {
 
 
@@ -70,9 +70,9 @@ int j=0;
 int k=0;
 int isValid[9] = {0,0,0,0,0,0,0,0,0};
 int overallResult = 1;
-
+int underExam;
 		for (j=0; j<9; j++){
-			int underExam = board[column][j];
+			underExam = board[column][j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			} else {
