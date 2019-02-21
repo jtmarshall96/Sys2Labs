@@ -26,7 +26,7 @@ int board[9][9] = {6,6,4,5,3,9,1,8,7,
 
 int pthread_valid_collumn(int board[9][9]);
 
-int pthread_check_row(int board[9][9]);
+int pthread_check_row(int board[9], int column);
 
 int pthread_check_three_by_three(int grid [3][3]);
 
@@ -34,7 +34,15 @@ int pthread_check_three_by_three(int grid [3][3]);
 int main()
 {
 
-	int checkRowVal = pthread_check_row(board);
+	pthread_t row1, row2, row3, row4, row4, row6, row7, row8, row9, output_thread;
+	void *ret_number;
+
+	pthread_create(&row1, NULL, board[0, 1, 2, 3, 4, 5, 6, 7, 8], NULL);
+	
+	for (int i=0; i<0; i++){
+		pthread_create(&row1, NULL, board[i+0, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8], NULL);
+		int checkRowVal = pthread_check_row(board, i);
+	}
 	
 	printf("collumn returns: %d\n",pthread_valid_collumn(board));
 
@@ -53,7 +61,7 @@ void *print_message_function(void *ptr)
 
 
 
-int pthread_check_row(int board[9][9])
+int pthread_check_row(int board[9], int column)
 {
 
 
@@ -63,9 +71,8 @@ int k=0;
 int isValid[9] = {0,0,0,0,0,0,0,0,0};
 int overallResult = 1;
 
-	for(i=0; i<9; i++){
 		for (j=0; j<9; j++){
-			int underExam = board[i][j];
+			int underExam = board[column][j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			} else {
@@ -75,10 +82,6 @@ int overallResult = 1;
 			
 		}
 
-		for (k=0; k<9; k++){
-			isValid[k]=0;
-		}
-	}
 
 printf ("Row Result is %d\n", overallResult);
 
