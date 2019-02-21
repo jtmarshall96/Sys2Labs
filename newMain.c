@@ -16,21 +16,22 @@
 #define FALSE 0;
 
 
-
-int check_collumn(int board[9][9]);
-
-int check_row(int board[9]);
-
-int check_three_by_three(int *board[9][9], int rowStart, int rowEnd, int colStart, int colEnd);
-
-
    struct arg_struct{
 		int gridBoard[9][9];
 		int rowStart;
 		int rowEnd;	
 		int colStart;
 		int colEnd;
-	} ;
+	};
+
+
+
+
+int check_collumn(int board[9][9]);
+
+int check_row(int board[9]);
+
+int check_three_by_three( struct arg_struct *args);
 
 
 
@@ -43,7 +44,7 @@ int main()
 	int argsArr[5]= {board, 0,2,0,2};
 
 	
-       struct arg_struct *args = malloc(sizeof(struct arg_struct));
+	struct arg_struct *args = (struct arg_struct*)malloc(sizeof(struct arg_struct));
 
 	in_file = fopen("sudoku.txt","r");
 
@@ -177,21 +178,20 @@ int check_collumn(int board[9][9]){
 
 }
 
-int check_three_by_three(int *board[9][9], int rowStart, int rowEnd, int colStart, int colEnd)
+int check_three_by_three( struct arg_struct *args)
 {
 
-	printf("%d\n", rowStart);
-	printf(" board: %d\n", board[0][0]);
-
+	printf(" rows: %d\n", args->rowEnd);
+	
 int i=0;
 int j=0;
 int isValid[9] = {0,0,0,0,0,0,0,0,0};
 int overallResult = 1;
 int gridResult = 1;
 
-	for (i = rowStart; i<=rowEnd; i++){
-		for (j=colStart; j<=colEnd; j++){
-			int underExam = board[i][j];
+	for (i = args->rowStart; i<=args->rowEnd; i++){
+		for (j=args->colStart; j<=args->colEnd; j++){
+			int underExam = args->gridBoard[i][j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			}
