@@ -16,19 +16,35 @@
 #define FALSE 0;
 
 
+
 int check_collumn(int board[9][9]);
 
-int check_row(int board[9], int column);
+int check_row(int board[9]);
 
-int check_three_by_three(int grid [3][3]);
+int check_three_by_three(int *board[9][9], int rowStart, int rowEnd, int colStart, int colEnd);
+
+
+   struct arg_struct{
+		int gridBoard[9][9];
+		int rowStart;
+		int rowEnd;	
+		int colStart;
+		int colEnd;
+	} ;
+
+
 
 
 int main()
 {
 	char digit;
-	int x,y,board[9][9], ret_val,temp;
+	int x,y,board[9][9], ret_val,temp,grid_val;
 	FILE *in_file;
+	int argsArr[5]= {board, 0,2,0,2};
+
 	
+       struct arg_struct *args = malloc(sizeof(struct arg_struct));
+
 	in_file = fopen("sudoku.txt","r");
 
 	
@@ -37,16 +53,25 @@ int main()
 		for(y =0;y<9 && (digit =fgetc(in_file)) != EOF ;y++){
 			
 			if(digit == '\n'){ digit = fgetc(in_file);}
-			board[x][y] = atoi(&(digit)); 	
+			board[x][y] = atoi(&(digit));
+			(*args).gridBoard[x][y] = atoi(&(digit)); 	
 		}		
 	}
 	
+	
+	(*args).rowStart = 0;
+	(*args).rowEnd = 2;
+	(*args).colStart = 0;
+	(*args).colEnd = 2;
 
 	
 	
 	
-	
+	pthread_t block1, block2, block3, block4, block5, block6, block7, block8, block9, check_blocks_thread;
 	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9,check_columns_thread;
+
+	pthread_create(&block1,NULL,&check_three_by_three, (void *)args);
+
 
 	
 	ret_val = 2;
@@ -58,10 +83,9 @@ int main()
 	pthread_create(&row5,NULL,&check_row,(void *)board[4]);
 	pthread_create(&row6,NULL,&check_row,(void *)board[5]);
 	pthread_create(&row7,NULL,&check_row,(void *)board[6]);
-	pthread_create(&row7,NULL,&check_row,(void *)board[7]);
+	pthread_create(&row8,NULL,&check_row,(void *)board[7]);
+	pthread_create(&row9,NULL,&check_row,(void *)board[8]);
 	/*create thread for checking columns*/
-	pthread_create(&row7,NULL,&check_row,(void *)board[8]);
-
 	pthread_create(&check_columns_thread,NULL,&check_collumn,(void *)board);
 	
 	/*get the return value of the thread*/
@@ -83,7 +107,8 @@ int main()
 	
 	
 	pthread_join(check_columns_thread,&temp);
-
+	pthread_join(block1,&grid_val);
+	printf("executed check 3 by 3: %d\n",grid_val);
 
 	
 	
@@ -97,7 +122,7 @@ int main()
 
 
 
-int check_row(int board[9], int column)
+int check_row(int board[9])
 {
 
 
@@ -152,9 +177,11 @@ int check_collumn(int board[9][9]){
 
 }
 
-int check_three_by_three(int grid[3][3])
+int check_three_by_three(int *board[9][9], int rowStart, int rowEnd, int colStart, int colEnd)
 {
 
+	printf("%d\n", rowStart);
+	printf(" board: %d\n", board[0][0]);
 
 int i=0;
 int j=0;
@@ -162,9 +189,9 @@ int isValid[9] = {0,0,0,0,0,0,0,0,0};
 int overallResult = 1;
 int gridResult = 1;
 
-	for (i = 0; i<3; i++){
-		for (j=0; j<3; j++){
-			int underExam = grid[i][j];
+	for (i = rowStart; i<=rowEnd; i++){
+		for (j=colStart; j<=colEnd; j++){
+			int underExam = board[i][j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			}
