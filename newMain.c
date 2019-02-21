@@ -1,30 +1,32 @@
+/*
+*
+* Authors: Mansa thada, Jacob Marshall
+*	Systems 2: Operating systems 
+*	Lab 2
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
 
 
-/*
- TODO: make a function to check that each column contains the digits 1 through 9
- TODO: A thread to check that each row contains the digits 1 through 9
- TODO: Nine threads to check that each of the 3*3 subgrids contains the digits 1 through 9 
-*/
-
 #define TRUE 1;
 #define FALSE 0;
 
 
-int pthread_valid_collumn(int board[9][9]);
+int check_collumn(int board[9][9]);
 
 int check_row(int board[9], int column);
 
-int pthread_check_three_by_three(int grid [3][3]);
+int check_three_by_three(int grid [3][3]);
 
 
 int main()
 {
 	char digit;
-	int x,y,board[9][9], ret_val;
+	int x,y,board[9][9], ret_val,temp;
 	FILE *in_file;
 	
 	in_file = fopen("sudoku.txt","r");
@@ -44,7 +46,8 @@ int main()
 	
 	
 	
-	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9,check_columns_thread, output_thread;
+	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9,check_columns_thread;
+
 	
 	ret_val = 2;
 	/*create the thread for rows*/
@@ -56,8 +59,10 @@ int main()
 	pthread_create(&row6,NULL,&check_row,(void *)board[5]);
 	pthread_create(&row7,NULL,&check_row,(void *)board[6]);
 	pthread_create(&row7,NULL,&check_row,(void *)board[7]);
+	/*create thread for checking columns*/
 	pthread_create(&row7,NULL,&check_row,(void *)board[8]);
-	
+
+	pthread_create(&check_columns_thread,NULL,&check_collumn,(void *)board);
 	
 	/*get the return value of the thread*/
 	pthread_join(row1,&ret_val);
@@ -77,9 +82,14 @@ int main()
 		}	}
 	
 	
+	pthread_join(check_columns_thread,&temp);
+
+
 	
-	printf("%d\n",ret_val);
-	return 0;
+	
+	
+	printf("%d\n",(ret_val && temp));
+	return (ret_val && temp);
 	
 
 	
@@ -114,13 +124,13 @@ printf ("Row Result is %d\n", overallResult);
 return overallResult;
 }
 
-int pthread_valid_collumn(int board[9][9]){
+int check_collumn(int board[9][9]){
 
-	int row,collumn,number,i;
+	int row,collumn,number,i,overall;
 	int nums[9];
-
+	overall = TRUE;
 	for(row = 0; row<9;row++){
-		
+		/*re initialize the valid numbers array*/
 		for(i = 0; i<9;i++){
 		nums[i] = FALSE;
 		}
@@ -128,18 +138,21 @@ int pthread_valid_collumn(int board[9][9]){
 		for(collumn =0;collumn<9;collumn++){
 			number = board[collumn][row];
 			if(nums[number-1]){
-				return FALSE;
+				overall= FALSE;
 			}
 			else{
-				nums[number-1] = 1;
+				nums[number-1] = TRUE;
 			}	
 		}
+		printf ("cOLLUMN Result is %d\n", overall);
 	}
-	return TRUE;
+
+	
+	return overall;
 
 }
 
-int pthread_check_three_by_three(int grid[3][3])
+int check_three_by_three(int grid[3][3])
 {
 
 
@@ -168,10 +181,4 @@ printf ("GRID Overall Result is %d\n", gridResult);
 
 return gridResult;
 }
-
-
-/*need function to go through rows
-need function to go through columns
-need functions to through each box
-*/
 
