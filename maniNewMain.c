@@ -10,58 +10,84 @@
  TODO: Nine threads to check that each of the 3*3 subgrids contains the digits 1 through 9 
 */
 
-int board[9][9] = {6,6,4,5,3,9,1,8,7,
-		   5,1,9,7,2,8,6,3,4,
-		   8,3,7,6,1,4,2,9,5,
-		   1,4,3,8,6,5,7,2,9,
-		   9,5,8,2,4,7,3,6,1,
-		   7,6,2,3,9,1,4,5,8,
-		   3,7,1,9,5,6,8,4,2,
-		   4,9,6,1,8,2,5,7,3,
-		   2,8,5,4,7,3,9,1,6}; 
-
 #define TRUE 1;
 #define FALSE 0;
 
 
 int pthread_valid_collumn(int board[9][9]);
 
-int pthread_check_row(int board[9], int column);
+int check_row(int board[9], int column);
 
 int pthread_check_three_by_three(int grid [3][3]);
 
 
 int main()
 {
-
-	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9, output_thread;
-	void *ret_number;
-
-	pthread_create(&row1, NULL, board[0, 1, 2, 3, 4, 5, 6, 7, 8], NULL);
+	char digit;
+	int x,y,board[9][9], ret_val;
+	FILE *in_file;
 	
-	for (int i=0; i<0; i++){
-		pthread_create(&row1, NULL, board[i+0, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8], NULL);
-		int checkRowVal = pthread_check_row(board, i);
+	in_file = fopen("sudoku.txt","r");
+
+	
+		
+	for(x=0;x<9;x++){
+		for(y =0;y<9 && (digit =fgetc(in_file)) != EOF ;y++){
+			
+			if(digit == '\n'){ digit = fgetc(in_file);}
+			board[x][y] = atoi(&(digit)); 	
+		}		
 	}
 	
-	printf("collumn returns: %d\n",pthread_valid_collumn(board));
 
-	int grid[3][3] = {6, 2, 4, 5, 1, 9, 8, 3, 7};
-	int checkGridVal = pthread_check_three_by_three(grid);
-    
+	
+	
+	
+	
+	pthread_t row1, row2, row3, row4, row5, row6, row7, row8, row9,check_columns_thread, output_thread;
+	
+	ret_val = 2;
+	/*create the thread for rows*/
+	pthread_create(&row1,NULL,&check_row,(void *)board[0]);
+	pthread_create(&row2,NULL,&check_row,(void *)board[1]);
+	pthread_create(&row3,NULL,&check_row,(void *)board[2]);
+	pthread_create(&row4,NULL,&check_row,(void *)board[3]);
+	pthread_create(&row5,NULL,&check_row,(void *)board[4]);
+	pthread_create(&row6,NULL,&check_row,(void *)board[5]);
+	pthread_create(&row7,NULL,&check_row,(void *)board[6]);
+	pthread_create(&row7,NULL,&check_row,(void *)board[7]);
+	pthread_create(&row7,NULL,&check_row,(void *)board[8]);
+	
+	
+	/*get the return value of the thread*/
+	pthread_join(row1,&ret_val);
+	if(ret_val){
+		pthread_join(row2,&ret_val);
+			if(ret_val){pthread_join(row3,&ret_val);
+				if(ret_val){pthread_join(row4,&ret_val);
+					if(ret_val){pthread_join(row5,&ret_val);
+						if(ret_val){pthread_join(row6,&ret_val);
+							if(ret_val){pthread_join(row7,&ret_val);
+								if(ret_val){pthread_join(row8,&ret_val);
+									if(ret_val){pthread_join(row9,&ret_val);}
+								}
+							}	
+						}
+				}	}
+		}	}
+	
+	
+	
+	printf("%d\n",ret_val);
+	return 0;
+	
+
+	
 }
 
-void *print_message_function(void *ptr)
-{
-     char *message;
-     message = (char *) ptr;
-     printf("%s \n", message);
-}
 
 
-
-
-int pthread_check_row(int board[9][9], int column)
+int check_row(int board[9], int column)
 {
 
 
@@ -72,14 +98,14 @@ int isValid[9] = {0,0,0,0,0,0,0,0,0};
 int overallResult = 1;
 int underExam;
 		for (j=0; j<9; j++){
-			underExam = board[column][j];
+			underExam = board[j];
 			if (isValid[underExam-1] == 0){
 				isValid[underExam-1] = 1;
 			} else {
 				/*row is now invalid*/
 				overallResult = 0;
 			}
-			
+		
 		}
 
 
